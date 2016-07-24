@@ -1,0 +1,229 @@
+<!-- (C) Franck Barbenoire <fbarbenoire@yahoo.fr>
+License : GPL v3 -->
+<?xml version="1.0" encoding="utf-8"?>
+<SaladoPlayer>
+    <global debug="{% if saladoplayersettings.debug %}true{% else %}false{% endif %}">
+        <control autorotation="enabled:{% if tour.auto_rotation %}true,delay:10{% else %}false{% endif %}"/>
+        <control mouseWheelTrap="true"/>
+        {% if tour.first_panorama %}<panoramas firstPanorama="panorama_{{ tour.first_panorama.id }}"/>{% endif %}
+        <trace open="{% if saladoplayersettings.debug %}true{% else %}false{% endif %}"/>
+        <branding visible="{% if saladoplayersettings.branding %}true{% else %}false{% endif %}"/>
+    </global>
+    <panoramas>
+        {% for p in tour.panoramas %}
+        <panorama id="panorama_{{ p.id }}" path="{{ saladoplayersettings.url }}/{{ p.directory }}/face_f.xml" camera="{% if p.initial_pan %}pan:{{ p.initial_pan }},{% endif %}{% if p.initial_tilt %}tilt:{{ p.initial_tilt }},{% endif %}{% if p.min_tilt %}minVerticalFov:{{ p.min_tilt }},{% endif %}{% if p.max_tilt %}maxVerticalFov:{{ p.max_tilt }},{% endif %}maxPixelZoom:NaN,minFov:45,maxFov:90"{% if hotspot %} onLeave="hideBubble"{% endif %}{% if tour.scrollmenu and p.photo_hotspots %} onEnter="setGroup_{{ p.id }}"{% endif %} {% if p.direction %}direction="{{ p.direction }}"{% endif %}>
+            {% for c in p.panorama_hotspots %}
+	    <image id="hotspot_panorama_{{ p.id }}_{{ c.panorama.id }}" location="pan:{{ c.pan }},tilt:{{ c.tilt }}" transform="scaleX:0.4,scaleY:0.25" path="{{ saladoplayersettings.static_image_path }}/{{ saladoplayersettings.goto_hotspot_image }}"
+                   mouse="onClick:loadPano_{{ c.panorama.id }}{% if c.show_information %},onOver:showBubbleText_panorama_{{ c.panorama.id }},onOut:hideBubble{% endif %}"/>
+            {% endfor %}
+            {% for i in p.information_hotspots %}
+            <image id="hotspot_information_{{ i.id }}" location="pan:{{ i.pan }},tilt:{{ i.tilt }}" transform="scaleX:0.4,scaleY:0.4" path="{{ saladoplayersettings.static_image_path }}/{{ saladoplayersettings.goto_hotspot_image }}"
+                   mouse="onOver:showBubbleText_information_{{ i.id }},onOut:hideBubble"/>
+            {% endfor %}
+            {% for l in p.link_hotspots %}
+            <image id="hotspot_link_{{ l.id }}" location="pan:{{ l.pan }},tilt:{{ l.tilt }}" transform="scaleX:0.4,scaleY:0.4" path="{{ saladoplayersettings.static_image_path }}/{{ saladoplayersettings.link_hotspot_image }}"
+                   mouse="onClick:openLink_{{ l.id }},onOver:showBubbleText_link_{{ l.id }},onOut:hideBubble"/>
+            {% endfor %}
+            {% for f in p.photo_hotspots %}
+            <image id="hotspot_photo_{{ f.id }}" location="pan:{{ f.pan }},tilt:{{ f.tilt }}" transform="scaleX:0.4,scaleY:0.4" path="{{ saladoplayersettings.static_image_path }}/{{ saladoplayersettings.see_hotspot_image }}"
+                   mouse="onClick:showImageButton_{{ f.id }},onOver:showBubbleText_image_{{ f.id }},onOut:hideBubble"/>
+            {% endfor %}
+            {% for g in p.gallery_hotspots %}
+            <image id="hotspot_gallery_{{ g.id }}" location="pan:{{ g.pan }},tilt:{{ g.tilt }}" transform="scaleX:0.4,scaleY:0.4" path="{{ saladoplayersettings.static_image_path }}/{{ saladoplayersettings.see_hotspot_image }}"
+                   mouse="onClick:showGallery_{{ g.id }},onOver:showBubbleText_gallery_{{ g.id }},onOut:hideBubble"/>
+            {% endfor %}
+            {% if tour.nadir %}
+            <swf id="nadir_{{ p.id }}" location="tilt:-90" path="~modules/NadirSpot-1.0.swf" handCursor="false">
+                <settings path="{{ tour.nadir.path }}"/>
+            </swf>
+            {% endif %}
+        </panorama>
+        {% endfor %}
+    </panoramas>
+    <modules>
+        <ButtonBar path="~modules/buttonbar/ButtonBar-1.3.swf">
+            <buttons path="~modules/buttonbar/images/buttons_dark_30x30.png" spacing="2">
+               <button name="left" move="horizontal:-140"/>
+               <button name="up" move="horizontal:-110,vertical:-15"/>
+               <button name="down" move="horizontal:-110,vertical:15"/>
+               <button name="right" move="horizontal:-80"/>
+               {% if not tour.zoomslider %}
+               <button name="in" move="horizontal:-40,vertical:-15"/>
+               <button name="out" move="horizontal:-40,vertical:15"/>
+               {% endif %}
+               <button name="drag"/>
+               {% if tour.auto_rotation %}
+               <button name="autorotation"/>
+               {% endif %}
+               {% if not tour.full_screener %}
+               <button name="fullscreen"/>
+               {% endif %}
+            </buttons>
+        </ButtonBar>
+        <MouseCursor path="~modules/mousecursor/MouseCursor-1.3.swf">
+           <settings path="~modules/mousecursor/images/cursors_31x31.png"/>
+        </MouseCursor>
+        {% if tour.scrollmenu %}
+        <MenuScroller path="~modules/menuscroller/MenuScroller-1.3.3.swf">
+            <window open="false" onOpen="onMenuOpen" onClose="onMenuClose" openTween="time:0.5" closeTween="time:0.5"/>
+            <close path="~modules/menuscroller/images/ms_close.png" align="vertical:middle" move="horizontal:60"/>
+            <groups>
+                {% for p in tour.panoramas %}
+		{% if p.photo_hotspots %}
+                <group id="menuScrollerGroup_{{ p.panorama.id}}">
+                    {% for f in p.photo_hotspots %}
+                        <extraElement id="menuItem_{{ f.id }}" action="moveTo_{{ f.id }}" path="{{ f.url }}"/>
+                    {% endfor %}
+                </group>
+		{% endif %}
+                {% endfor %}
+            </groups>
+         </MenuScroller>
+        {% endif %}
+        {% if tour.viewfinder %}
+        <ViewFinder path="~modules/ViewFinder-1.3.swf"/>
+        {% endif %}
+        <InfoBubble path="~modules/InfoBubble-1.3.3.swf">
+            <bubbles>
+                {% for p in tour.panoramas %}
+                <text id="bubbleText_panorama_{{ p.id }}" text="{{ p.title }}"/>
+                {% for i in p.information_hotspots %}
+                <text id="bubbleText_information_{{ i.id }}" text="{{ i.title }}"/>
+                {% endfor %}
+                {% for l in p.link_hotspots %}
+                <text id="bubbleText_link_{{ l.id }}" text="{{ l.title }}"/>
+                {% endfor %}
+                {% for f in p.photo_hotspots %}
+                <text id="bubbleText_photo_{{ f.id }}" text="{{ f.title }}"/>
+                {% endfor %}
+                {% for g in p.gallery_hotspots %}
+                <text id="bubbleText_gallery_{{ g.id }}" text="{{ g.title }}"/>
+                {% endfor %}
+                {% endfor %}
+            </bubbles>
+        </InfoBubble>
+        <ImageGallery path="~modules/imagegallery/ImageGallery-1.0.swf">
+            <viewer path="~modules/imagegallery/images/buttons_dark_40x40.png" throbber="~modules/imagegallery/images/throbber-circles.gif" style="alpha:0.7"/>
+            <close path="~modules/imagegallery/images/close.png" move="vertical:-10,horizontal:10"/>
+            <groups>
+                {% for p in tour.panoramas %}
+                {% for g in p.gallery_hotspots %}
+                <group id="galleryGroup_{{ g.id }}">
+                    {% for f in g.photos %}
+                    <image path="{{ f.path }}"/>
+                    {% endfor %}
+                </group>
+                {% endfor %}
+                {% endfor %}
+            </groups>
+        </ImageGallery>
+        <ImageButton path="~modules/ImageButton-1.3.swf">
+            {% for p in tour.panoramas %}
+            {% for f in p.photo_hotspots %}
+            <button id="imageButton_{{ f.id }}" path="{{ f.url }}" action="hideImageButton_{{ f.id }}">
+                <window align="vertical:middle,horizontal:center" open="false"/>
+            </button>
+            {% endfor %}
+            {% endfor %}
+            {% if tour.scrollmenu %}
+            <button id="buttonMenu" path="~modules/menuscroller/images/ms_open.png" action="openMenu">
+                <window align="vertical:middle,horizontal:left" move="horizontal:0,vertical:0" openTween="time:0" closeTween="time:0" />
+            </button>
+            {% endif %}
+        </ImageButton>
+        {% if tour.dropmenu %}
+        <DropDown path="~modules/DropDown-1.3.swf">
+           <window align="horizontal:left,vertical:bottom" move="horizontal:300,vertical:-10"/>
+           <settings opensUp="true" style="fontSize:14"/>
+           <groups>
+               <group id="group">
+                   {% for p in tour.panoramas %}
+                   <element label="{{ p.title }}" target="panorama_{{ p.id }}"/>
+                   {% endfor %}
+               </group>
+           </groups>
+        </DropDown>
+        {% endif %}
+        {% if tour.zoomslider %}
+        <ZoomSlider path="~modules/zoomslider/ZoomSlider-1.3.swf">
+            <window align="horizontal:right,vertical:middle"/>
+            <slider path="~modules/zoomslider/images/elements_dark_40x40.png" slidesHorizontal="false" minLength="200" maxLength="600"/>
+        </ZoomSlider>
+        {% endif %}
+        {% if tour.full_screener %}
+        <FullScreener path="~modules/fullscreener/FullScreener-1.1.swf">
+            <settings path="~modules/fullscreener/images/button_thick_black_50x50.png"/>
+        </FullScreener>
+        {% endif %}
+        <LinkOpener path="~modules/LinkOpener-1.1.swf">
+            <links>
+                 {% for p in tour.panoramas %}
+                 {% for l in p.link_hotspots %}
+                 <link id="linkOpener_{{ l.id }}" content="{{ l.url }}"/>
+                 {% endfor %}{# l in p.link_hotspots #}
+                 {% endfor %}{# p in panoramas #}
+            </links>
+        </LinkOpener>
+        {% if tour.maps %}
+        <ImageMap path="~modules/imagemap/ImageMap-1.4.3.swf">
+            <close path="~modules/imagemap/images/close.png" move="horizontal:10,vertical:-10"/>
+            <viewer path="~modules/imagemap/images/navigation_black_20x20.png"/>
+            <window margin="right:60"/>
+            <maps>
+                {% for m in tour.maps %}
+		<map id="image_map_{{ m.id }}" path="{{ m.photo.path }}">
+                    <waypoints path="~modules/imagemap/images/waypoints_button_20x20.png" radar="showTilt:true">
+                        {% for pm in m.panorama_mappings %}
+                        <waypoint target="panorama_{{ pm.panorama.id }}" position="x:{{ pm.x }},y:{{ pm.y }}"/>
+                        {% endfor %}
+                    </waypoints>
+                </map>
+                {% endfor %}
+            </maps>
+        </ImageMap>
+        {% endif %}
+        {% if tour.compass %}
+        <Compass path="~modules/compass/Compass-1.2.swf">
+            <window align="horizontal:right" move="horizontal:-20,vertical:-20"/>
+            <settings path="~modules/compass/images/compass_dark_93x81.png"/>
+        </Compass>
+        {% endif %}
+    </modules>
+    <actions>
+        {% for p in tour.panoramas %}
+        <action id="loadPano_{{ p.id }}" content="SaladoPlayer.loadPano(panorama_{{ p.id }})"/>
+        <action id="showBubbleText_panorama_{{ p.id }}" content="InfoBubble.show(bubbleText_panorama_{{ p.id }})"/>
+        {% if tour.scrollmenu and p.photo_hotspots %}
+        <action id="setGroup_{{ p.id }}" content="MenuScroller.setGroup(menuScrollerGroup_{{ p.id }})"/>
+        {% endif %}
+        {% for i in p.information_hotspots %}
+        <action id="showBubbleText_information_{{ i.id }}" content="InfoBubble.show(bubbleText_information_{{ i.id }})"/>
+        {% endfor %}
+        {% for l in p.link_hotspots %}
+        <action id="openLink_{{ l.id }}" content="LinkOpener.open(linkOpener_{{ l.id }})" />
+        <action id="showBubbleText_link_{{ l.id }}" content="InfoBubble.show(bubbleText_link_{{ l.id }})"/>
+        {% endfor %}
+        {% for f in p.photo_hotspots %}
+        <action id="showImageButton_{{ f.id }}" content="ImageButton.setOpen(imageButton_{{ f.id }},true)"/>
+        <action id="hideImageButton_{{ f.id }}" content="ImageButton.setOpen(imageButton_{{ f.id }},false)"/>
+        <action id="showBubbleText_image_{{ f.id }}" content="InfoBubble.show(bubbleText_photo_{{ f.id }})"/>
+        {% if tour.scrollmenu %}
+        <action id="moveTo_{{ f.id }}" content="SaladoPlayer.moveToHotspotThen(hotspot_photo_{{ f.id }},90,zoomHotspot)"/>
+        {% endif %}
+        {% endfor %}{# f in p.photo_hotspots #}
+        {% for g in p.gallery_hotspots %}
+        <action id="showBubbleText_gallery_{{ g.id }}" content="InfoBubble.show(bubbleText_gallery_{{ g.id }})"/>
+        <action id="showGallery_{{ g.id }}" content="ImageGallery.setOpen(true);ImageGallery.setGroup(galleryGroup_{{ g.id }})"/>
+        {% endfor %}{# g in p.gallery_hotspots #}
+        {% endfor %}{# p in panoramas #}
+        <action id="hideBubble" content="InfoBubble.hide()"/>
+        {% if tour.scrollmenu %}
+        <action id="onMenuOpen" content="ImageButton.setOpen(buttonMenu,false)"/>
+        <action id="onMenuClose" content="SaladoPlayer.waitThen(0.5,openButtonMenu)"/>
+        <action id="openButtonMenu" content="ImageButton.setOpen(buttonMenu,true)"/>
+        <action id="openMenu" content="MenuScroller.setOpen(true)"/>
+        <action id="closeMenu" content="MenuScroller.setOpen(false)"/>
+        <action id="zoomHotspot" content="SaladoPlayer.moveToView(NaN,NaN,40)"/>
+        {% endif %}{# tour.scrollmenu #}
+    </actions>
+</SaladoPlayer>
