@@ -70,7 +70,7 @@ License : GPL v3 -->
             <groups>
                 {% for p in tour.panoramas %}
 		{% if p.photo_hotspots %}
-                <group id="menuScrollerGroup_{{ p.panorama.id}}">
+                <group id="menuScrollerGroup_{{ p.id}}">
                     {% for f in p.photo_hotspots %}
                         <extraElement id="menuItem_{{ f.id }}" action="moveTo_{{ f.id }}" path="{{ f.url }}"/>
                     {% endfor %}

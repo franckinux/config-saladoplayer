@@ -2,12 +2,7 @@
 
 
 class Tour:
-    id = 0
-
     def __init__(self, **kwargs):
-        Tour.id += 1
-        self.id = Tour.id
-
         self.title = kwargs.get("title")
         self.dropmenu = kwargs.get("dropmenu", False)
         self.viewfinder = kwargs.get("viewfinder", False)
@@ -20,7 +15,6 @@ class Tour:
         self.facebook_metadata = kwargs.get("facebook_metadata")
 
         self.first_panorama = kwargs.get("first_panorama")
-        # self.photo_size = models.ForeignKey(PhotoSize, blank=True, null=True)
         self.nadir = kwargs.get("nadir")
 
         self.panoramas = kwargs.get("panoramas", [])
