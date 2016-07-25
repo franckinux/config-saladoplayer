@@ -61,7 +61,19 @@ class GalleryHotspot:
         self.title = kwargs.get("title")
         self.pan = kwargs.get("pan")
         self.tilt = kwargs.get("tilt")
-        self.photos = kwargs.get("photos", [])
+        self.photo_hotspots = kwargs.get("photo_hotspots", [])
+
+
+class PhotoHotspot:
+    id = 0
+
+    def __init__(self, **kwargs):
+        PhotoHotspot.id += 1
+        self.id = PhotoHotspot.id
+
+        self.photo = kwargs.get("photo")
+        self.pan = kwargs.get("pan")
+        self.tilt = kwargs.get("tilt")
 
 
 class Photo:
