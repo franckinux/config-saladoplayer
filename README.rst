@@ -9,8 +9,10 @@ panoramas, I exceeded the 10Gb limit. So, I switched to a static hosting with
 100Gb storage. I had to generate my tour configuration offline, that's my I
 started this project. Finilly, I prefer this way of configuring pararama tours.
 
-The tour configuration is made via a python file called config.py.
+The tour configuration is made via a python module.
 
-Running the example :
+Some common settings are written in an ini file config.ini.
 
-python3 make-config.py config
+Running the example : ::
+
+    python3 make-config.py config > config.xml

@@ -4,6 +4,7 @@ import argparse
 import configparser
 from importlib import import_module
 from jinja2 import Environment, FileSystemLoader
+import sys
 
 parser = argparse.ArgumentParser(description="panorama tour configuration")
 parser.add_argument("config_module", help="configuration module")
@@ -36,9 +37,8 @@ template = env.get_template("config.xml")
 output_from_parsed_template = template.render(context)
 
 # to save the results
-with open("config.xml", "wb") as fh:
-    for line in output_from_parsed_template.splitlines():
-        line = line.rstrip()
-        if line:
-            line = line + '\n'
-            fh.write(line.encode("utf-8"))
+for line in output_from_parsed_template.splitlines():
+	line = line.rstrip()
+	if line:
+		line = line + '\n'
+		sys.stdout.write(line)
