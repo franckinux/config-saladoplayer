@@ -1,12 +1,17 @@
 # -*- coding: utf-8 -*-
 
+import argparse
+from importlib import import_module
 from jinja2 import Environment, FileSystemLoader
 
-from config import tour
+parser = argparse.ArgumentParser(description="panorama tour configuration")
+parser.add_argument("config_module", help="configuration module")
+args = parser.parse_args()
 
+config_module = import_module(args.config_module)
 
 context = {
-    "tour": tour,
+    "tour": config_module.tour,
     "saladoplayersettings": {
         "branding": True,
         "debug": False,

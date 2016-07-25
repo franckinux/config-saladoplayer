@@ -13,4 +13,4 @@ The tour configuration is made via a python file called config.py.
 
 Running the example :
 
-python3 make-config.py
+python3 make-config.py config
