@@ -12,24 +12,32 @@ parser.add_argument("-c", "--config", default="config.ini", help="configuration 
 args = parser.parse_args()
 
 # import module configuration file
-config_module = import_module(args.config_module)
+try:
+    config_module = import_module(args.config_module)
+except:
+    sys.stderr.write("problem encountered while processing module %s\n" % args.config_module)
+    sys.exit(1)
 
 # read section "saladoplayersettings" in configuration file
 config = configparser.ConfigParser()
-config.read(args.config)
-section = config["saladoplayersettings"]
+try:
+    config.read(args.config)
+    section = config["saladoplayersettings"]
+except:
+    sys.stderr.write("problem encountered while processing configuration file %s\n" % args.config)
+    sys.exit(2)
 
 context = {
     "tour": config_module.tour,
     "saladoplayersettings": {
-        "branding": section.getboolean("branding"),
-        "debug": section.getboolean("debug"),
+        "branding": section.getboolean("branding", True),
+        "debug": section.getboolean("debug", False),
         "static_image_path": section.get("static_image_path"),
-        "goto_hotspot_image": section.get("goto_hotspot_image"),
-        "info_hotspot_image": section.get("info_hotspot_image"),
-        "link_hotspot_image": section.get("link_hotspot_image"),
-        "see_hotspot_image": section.get("see_hotspot_image"),
-        "url": section.get("url"),
+        "goto_hotspot_image": section.get("goto_hotspot_image", "goto.png"),
+        "info_hotspot_image": section.get("info_hotspot_image", "info.png"),
+        "link_hotspot_image": section.get("link_hotspot_image", "link.png"),
+        "see_hotspot_image": section.get("see_hotspot_image", "see.png"),
+        "url": section.get("url", "http://www.pano.com"),
     },
 }
 
@@ -39,7 +47,7 @@ output_from_parsed_template = template.render(context)
 
 # to save the results
 for line in output_from_parsed_template.splitlines():
-	line = line.rstrip()
-	if line:
-		line = line + '\n'
-		sys.stdout.write(line)
+    line = line.rstrip()
+    if line:
+        line = line + '\n'
+        sys.stdout.write(line)
