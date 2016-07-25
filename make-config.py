@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import argparse
+import configparser
 from importlib import import_module
 from jinja2 import Environment, FileSystemLoader
 
@@ -8,19 +9,25 @@ parser = argparse.ArgumentParser(description="panorama tour configuration")
 parser.add_argument("config_module", help="configuration module")
 args = parser.parse_args()
 
+# import module configuration file
 config_module = import_module(args.config_module)
+
+# read section "saladoplayersettings" in configuration file
+config = configparser.ConfigParser()
+config.read("config.ini")
+section = config["saladoplayersettings"]
 
 context = {
     "tour": config_module.tour,
     "saladoplayersettings": {
-        "branding": True,
-        "debug": False,
-        "static_image_path": "/static/images/hotspots",
-        "goto_hotspot_image": "pas_orange_blanc_carre.png",
-        "info_hotspot_image": "info_bleu_blanc_triangle.png",
-        "link_hotspot_image": "oeil_jaune_noir_rond.png",
-        "see_hotspot_image": "oeil_jaune_noir_rond.png",
-        "url": "http://panoramas.franck-barbenoire.fr",
+        "branding": section.getboolean("branding"),
+        "debug": section.getboolean("debug"),
+        "static_image_path": section.get("static_image_path"),
+        "goto_hotspot_image": section.get("goto_hotspot_image"),
+        "info_hotspot_image": section.get("info_hotspot_image"),
+        "link_hotspot_image": section.get("link_hotspot_image"),
+        "see_hotspot_image": section.get("see_hotspot_image"),
+        "url": section.get("url"),
     },
 }
 
