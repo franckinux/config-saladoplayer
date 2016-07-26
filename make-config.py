@@ -4,7 +4,10 @@ import argparse
 import configparser
 from importlib import import_module
 from jinja2 import Environment, FileSystemLoader
+import os
 import sys
+
+directory = os.path.dirname(os.path.abspath(__file__))
 
 parser = argparse.ArgumentParser(description="panorama tour configuration")
 parser.add_argument("config_module", help="configuration module")
@@ -41,7 +44,7 @@ context = {
     },
 }
 
-env = Environment(loader=FileSystemLoader('templates'))
+env = Environment(loader=FileSystemLoader(os.path.join(directory, "templates")))
 template = env.get_template("config.xml")
 output_from_parsed_template = template.render(context)
 
