@@ -9,25 +9,25 @@
     </global>
     <panoramas>
         {% for p in tour.panoramas %}
-        <panorama id="panorama_{{ p.id }}" path="{{ saladoplayersettings.url }}/{{ p.directory }}/face_f.xml" camera="{% if p.initial_pan %}pan:{{ p.initial_pan }},{% endif %}{% if p.initial_tilt %}tilt:{{ '%0.2f' % p.initial_tilt|float }},{% endif %}{% if p.min_tilt %}minVerticalFov:{{ '%0.2f' % p.min_tilt|float }},{% endif %}{% if p.max_tilt %}maxVerticalFov:{{ '%0.2f' % p.max_tilt|float }},{% endif %}maxPixelZoom:NaN,minFov:45,maxFov:90"{% if hotspot %} onLeave="hideBubble"{% endif %}{% if tour.scrollmenu and p.photo_hotspots %} onEnter="setGroup_{{ p.id }}"{% endif %} {% if p.direction %}direction="{{ p.direction }}"{% endif %}>
+        <panorama id="panorama_{{ p.id }}" path="{{ saladoplayersettings.url }}/{{ p.directory }}/face_f.xml" camera="{% if p.initial_pan %}pan:{{ p.initial_pan }},{% endif %}{% if p.initial_tilt %}tilt:{{ '%0.1f' % p.initial_tilt|float }},{% endif %}{% if p.min_tilt %}minVerticalFov:{{ '%0.1f' % p.min_tilt|float }},{% endif %}{% if p.max_tilt %}maxVerticalFov:{{ '%0.1f' % p.max_tilt|float }},{% endif %}maxPixelZoom:NaN,minFov:45,maxFov:90"{% if hotspot %} onLeave="hideBubble"{% endif %}{% if tour.scrollmenu and p.photo_hotspots %} onEnter="setGroup_{{ p.id }}"{% endif %} {% if p.direction %}direction="{{ p.direction }}"{% endif %}>
             {% for c in p.panorama_hotspots %}
-            <image id="hotspot_panorama_{{ p.id }}_{{ c.panorama.id }}" location="pan:{{ '%0.2f' % c.pan|float }},tilt:{{ '%0.2f' % c.tilt|float }}" transform="scaleX:0.4,scaleY:0.25" path="{{ saladoplayersettings.static_image_path }}/{{ saladoplayersettings.goto_hotspot_image }}"
+            <image id="hotspot_panorama_{{ p.id }}_{{ c.panorama.id }}" location="pan:{{ '%0.1f' % c.pan|float }},tilt:{{ '%0.1f' % c.tilt|float }}" transform="scaleX:0.4,scaleY:0.25" path="{{ saladoplayersettings.static_image_path }}/{{ saladoplayersettings.goto_hotspot_image }}"
                    mouse="onClick:loadPano_{{ c.panorama.id }}{% if c.show_information %},onOver:showBubbleText_panorama_{{ c.panorama.id }},onOut:hideBubble{% endif %}"/>
             {% endfor %}
             {% for i in p.information_hotspots %}
-            <image id="hotspot_information_{{ i.id }}" location="pan:{{ '%0.2f' % i.pan|float }},tilt:{{ '%0.2f' % i.tilt|float }}" transform="scaleX:0.4,scaleY:0.4" path="{{ saladoplayersettings.static_image_path }}/{{ saladoplayersettings.goto_hotspot_image }}"
+            <image id="hotspot_information_{{ i.id }}" location="pan:{{ '%0.1f' % i.pan|float }},tilt:{{ '%0.1f' % i.tilt|float }}" transform="scaleX:0.4,scaleY:0.4" path="{{ saladoplayersettings.static_image_path }}/{{ saladoplayersettings.goto_hotspot_image }}"
                    mouse="onOver:showBubbleText_information_{{ i.id }},onOut:hideBubble"/>
             {% endfor %}
             {% for l in p.link_hotspots %}
-            <image id="hotspot_link_{{ l.id }}" location="pan:{{ '%0.2f' % l.pan|float }},tilt:{{ '%0.2f' % l.tilt|float }}" transform="scaleX:0.4,scaleY:0.4" path="{{ saladoplayersettings.static_image_path }}/{{ saladoplayersettings.link_hotspot_image }}"
+            <image id="hotspot_link_{{ l.id }}" location="pan:{{ '%0.1f' % l.pan|float }},tilt:{{ '%0.1f' % l.tilt|float }}" transform="scaleX:0.4,scaleY:0.4" path="{{ saladoplayersettings.static_image_path }}/{{ saladoplayersettings.link_hotspot_image }}"
                    mouse="onClick:openLink_{{ l.id }},onOver:showBubbleText_link_{{ l.id }},onOut:hideBubble"/>
             {% endfor %}
             {% for f in p.photo_hotspots %}
-            <image id="hotspot_photo_{{ f.id }}" location="pan:{{ '%0.2f' % f.pan|float }},tilt:{{ '%0.2f' % f.tilt|float }}" transform="scaleX:0.4,scaleY:0.4" path="{{ saladoplayersettings.static_image_path }}/{{ saladoplayersettings.see_hotspot_image }}"
+            <image id="hotspot_photo_{{ f.id }}" location="pan:{{ '%0.1f' % f.pan|float }},tilt:{{ '%0.1f' % f.tilt|float }}" transform="scaleX:0.4,scaleY:0.4" path="{{ saladoplayersettings.static_image_path }}/{{ saladoplayersettings.see_hotspot_image }}"
                    mouse="onClick:showImageButton_{{ f.id }},onOver:showBubbleText_image_{{ f.id }},onOut:hideBubble"/>
             {% endfor %}
             {% for g in p.gallery_hotspots %}
-            <image id="hotspot_gallery_{{ g.id }}" location="pan:{{ '%0.2f' % g.pan|float }},tilt:{{ '%0.2f' % g.tilt|float }}" transform="scaleX:0.4,scaleY:0.4" path="{{ saladoplayersettings.static_image_path }}/{{ saladoplayersettings.see_hotspot_image }}"
+            <image id="hotspot_gallery_{{ g.id }}" location="pan:{{ '%0.1f' % g.pan|float }},tilt:{{ '%0.1f' % g.tilt|float }}" transform="scaleX:0.4,scaleY:0.4" path="{{ saladoplayersettings.static_image_path }}/{{ saladoplayersettings.see_hotspot_image }}"
                    mouse="onClick:showGallery_{{ g.id }},onOver:showBubbleText_gallery_{{ g.id }},onOut:hideBubble"/>
             {% endfor %}
             {% if tour.nadir %}
