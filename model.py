@@ -61,7 +61,7 @@ class GalleryHotspot:
         self.title = kwargs.get("title")
         self.pan = kwargs.get("pan")
         self.tilt = kwargs.get("tilt")
-        self.photo = kwargs.get("photo", [])
+        self.photos = kwargs.get("photos", [])
 
 
 class PhotoHotspot:
