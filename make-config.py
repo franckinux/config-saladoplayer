@@ -11,7 +11,9 @@ directory = os.path.dirname(os.path.abspath(__file__))
 
 parser = argparse.ArgumentParser(description="panorama tour configuration")
 parser.add_argument("config_module", help="configuration module")
-parser.add_argument("-c", "--config", default="config.ini", help="configuration file")
+parser.add_argument("-c", "--config",
+                    default=os.path.join(directory, "config.ini"),
+                    help="configuration file")
 args = parser.parse_args()
 
 # import module configuration file
