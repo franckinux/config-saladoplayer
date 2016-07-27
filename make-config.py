@@ -2,7 +2,7 @@
 
 import argparse
 import configparser
-from importlib import import_module
+from importlib.machinery import SourceFileLoader
 from jinja2 import Environment, FileSystemLoader
 import os
 import sys
@@ -19,7 +19,7 @@ args = parser.parse_args()
 
 # import module configuration file
 try:
-    config_module = import_module(args.config_module)
+    config_module = SourceFileLoader("config", args.config_module).load_module()
 except:
     sys.stderr.write("problem encountered while processing module %s\n" % args.config_module)
     sys.exit(1)
