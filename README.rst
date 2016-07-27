@@ -13,6 +13,6 @@ The tour configuration is made via a python module.
 
 Some common settings are written in an ini file config.ini.
 
-Running the example : ::
+Running the code : ::
 
-    python3 make-config.py config > config.xml
+    python3 make-config.py /path/to/config.py > config.xml
