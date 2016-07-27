@@ -57,7 +57,7 @@ gallery_hotspot_1 = GalleryHotspot(
     title="Gallery 1",
     pan=23,
     tilt=57,
-    photos=[photo_hotspot_1, photo_hotspot_2, photo_hotspot_3]
+    photos=[photo_1, photo_2, photo_3]
 )
 
 # --- information hotspot
