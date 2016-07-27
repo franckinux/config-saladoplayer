@@ -8,6 +8,7 @@ import os
 import sys
 
 directory = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(directory)
 
 parser = argparse.ArgumentParser(description="panorama tour configuration")
 parser.add_argument("config_module", help="configuration module")
