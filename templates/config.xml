@@ -15,7 +15,7 @@
                    mouse="onClick:loadPano_{{ c.panorama.id }}{% if c.show_information %},onOver:showBubbleText_panorama_{{ c.panorama.id }},onOut:hideBubble{% endif %}"/>
             {% endfor %}
             {% for i in p.information_hotspots %}
-            <image id="hotspot_information_{{ i.id }}" location="pan:{{ '%0.1f' % i.pan|float }},tilt:{{ '%0.1f' % i.tilt|float }}" transform="scaleX:0.4,scaleY:0.4" path="{{ saladoplayersettings.static_image_path }}/{{ saladoplayersettings.goto_hotspot_image }}"
+            <image id="hotspot_information_{{ i.id }}" location="pan:{{ '%0.1f' % i.pan|float }},tilt:{{ '%0.1f' % i.tilt|float }}" transform="scaleX:0.4,scaleY:0.4" path="{{ saladoplayersettings.static_image_path }}/{{ saladoplayersettings.info_hotspot_image }}"
                    mouse="onOver:showBubbleText_information_{{ i.id }},onOut:hideBubble"/>
             {% endfor %}
             {% for l in p.link_hotspots %}

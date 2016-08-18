@@ -30,16 +30,16 @@ photo_nadir = Photo(
 
 photo_hotspot_1_1 = PhotoHotspot(
     photo=photo_1_1,
-    pan=11.1,
-    tilt=22.2
+    pan=11,
+    tilt=22
 )
 
 # --- gallery hotspots
 
 gallery_hotspot_2_1 = GalleryHotspot(
     title="Gallery",
-    pan=23,
-    tilt=57,
+    pan=-10,
+    tilt=20,
     photos=[photo_2_1, photo_2_2]
 )
 
@@ -47,7 +47,7 @@ gallery_hotspot_2_1 = GalleryHotspot(
 
 information_hotspot_1_1 = InformationHotspot(
     title="This is an information hotspot",
-    pan=11,
+    pan=-9,
     tilt=23
 )
 
@@ -69,7 +69,7 @@ panorama_2 = Panorama(
 # --- panorama hotspots
 
 panorama_hotspot_1_2 = PanoramaHotspot(panorama=panorama_2, pan=30, tilt=5, show_information=True)
-panorama_hotspot_2_1 = PanoramaHotspot(panorama=panorama_1, pan=25, tilt=3, show_information=False)
+panorama_hotspot_2_1 = PanoramaHotspot(panorama=panorama_1, pan=30, tilt=5, show_information=True)
 
 panorama_1.panorama_hotspots.append(panorama_hotspot_1_2)
 panorama_2.panorama_hotspots.append(panorama_hotspot_2_1)
