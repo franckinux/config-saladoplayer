@@ -28,28 +28,19 @@ install: config cube_directories photos_
 	cp -R images/* static/images
 	#---
 	mkdir tour1/media
-	# ln -sf images/nadir-franck-barbenoire.png tour1/media/nadir.png
-	# ln -sf photos/photo-1-1.jpg tour1/media
-	# ln -sf photos/photo-2-1.jpg tour1/media
-	# ln -sf photos/photo-2-2.jpg tour1/media
-	cp images/nadir-franck-barbenoire.png tour1/media/nadir.png
-	cp photos/photo-1-1.jpg tour1/media
-	cp photos/photo-2-1.jpg tour1/media
-	cp photos/photo-2-2.jpg tour1/media
+	ln -sf ../../images/nadir-franck-barbenoire.png tour1/media/nadir.png
+	ln -sf ../../photos/photo-1-1.jpg tour1/media
+	ln -sf ../../photos/photo-2-1.jpg tour1/media
+	ln -sf ../../photos/photo-2-2.jpg tour1/media
 	mkdir tour2/media
-	cp images/nadir-franck-barbenoire.png tour2/media/nadir.png
-	cp photos/photo-1.jpg tour2/media
+	ln -sf ../../images/nadir-franck-barbenoire.png tour2/media/nadir.png
+	ln -sf ../../photos/photo-1.jpg tour2/media
 	#---
-	# ln -sf pano tour1/tiles_1
-	# ln -sf pano tour1/tiles_2
-	# ln -sf pano tour2/tiles_1
-	# ln -sf pano tour2/tiles_2
-	# ln -sf pano tour2/tiles_3
-	cp -r pano tour1/tiles_1
-	cp -r pano tour1/tiles_2
-	cp -r pano tour2/tiles_1
-	cp -r pano tour2/tiles_2
-	cp -r pano tour2/tiles_3
+	ln -sf ../pano tour1/tiles_1
+	ln -sf ../pano tour1/tiles_2
+	ln -sf ../pano tour2/tiles_1
+	ln -sf ../pano tour2/tiles_2
+	ln -sf ../pano tour2/tiles_3
 
 serve:
 	python3 -m http.server
@@ -61,12 +52,12 @@ clean:
 	make -C photos $@
 	make -C saladoplayer $@
 	#---
-	rm -rf tour1/tiles_1
-	rm -rf tour1/tiles_2
+	rm -f tour1/tiles_1
+	rm -f tour1/tiles_2
+	rm -f tour2/tiles_1
+	rm -f tour2/tiles_2
+	rm -f tour2/tiles_3
 	rm -rf tour1/media
-	rm -rf tour2/tiles_1
-	rm -rf tour2/tiles_2
-	rm -rf tour2/tiles_3
 	rm -rf tour2/media
 
 .PHONY: all clean install serve
