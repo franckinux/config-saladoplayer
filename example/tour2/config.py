@@ -37,7 +37,7 @@ information_hotspot_2_1 = InformationHotspot(
 link_hotspot_1_1 = LinkHotspot(
     title="This is a link hotspot",
     pan=13,
-    tilt=27,
+    tilt=17,
     url="http://www.johndoe.com"
 )
 
